@@ -104,8 +104,11 @@ class DistributedRuns(Plugin):
         return True
 
     def validateName(self, testObject):
-        address = test_address(testObject)
-        #from nose.tools import set_trace; set_trace()
+        filepath, module, call = test_address(testObject)
+
+        node = self.hash_ring.get_node('%s.%s' % (module, call))
+        if node != self.node_id:
+            return False
 
         return None
 
