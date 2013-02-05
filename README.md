@@ -8,16 +8,9 @@ Machine 1:
 
 	$ nosetests long_test_suite
 	...
-	Ran 1968 tests in 1290.109s
+	Ran 1312 tests in 401.109s
 
 Machine 2:
-
-	$ echo "I'm bored :("
-	I'm bored :(
-	$ uptime | awk -F'load average:' '{ print "Load: " $2 }'
-	Load: 0.00, 0.00, 0.00
-
-Machine 3:
 
 	$ echo "I'm bored :("
 	I'm bored :(
@@ -32,31 +25,21 @@ Developer:
 
 Machine 1:
 
-	$ export NOSE_DR_MACHINE_COUNT=3;
+	$ export NOSE_DR_MACHINE_COUNT=2;
 	$ export NOSE_DR_MACHINE_ID=1;
 	$ nosetests --with-distributed-runs long_test_suite
 	...
-	Ran 656 tests in 440.502s
+	Ran 660 tests in 220.502s
 
 Machine 2:
 
 	$ echo "I feel loved"
 	I feel loved
-	$ export NOSE_DR_MACHINE_COUNT=3;
+	$ export NOSE_DR_MACHINE_COUNT=2;
 	$ export NOSE_DR_MACHINE_ID=2;
 	$ nosetests --with-distributed-runs long_test_suite
 	...
-	Ran 656 tests in 440.502s
-
-Machine 3:
-
-	$ echo "I feel loved"
-	I feel loved
-	$ export NOSE_DR_MACHINE_COUNT=3;
-	$ export NOSE_DR_MACHINE_ID=3;
-	$ nosetests --with-distributed-runs long_test_suite
-	...
-	Ran 656 tests in 440.502s
+	Ran 652 tests in 214.007s
 
 ## The Saga of Your Test Suite
 
