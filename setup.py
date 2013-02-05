@@ -21,7 +21,7 @@ CLASSIFIERS = [
     'Operating System :: MacOS :: MacOS X',
 ]
 
-NAME = 'nose-distributed-runs'
+NAME = 'distributed-nose'
 
 # Distribution Meta stuff to keep things DRY
 
@@ -61,7 +61,7 @@ pats = {
 }
 
 here = os.path.abspath(os.path.dirname(__file__))
-meta_fh = open(os.path.join(here, 'nose_distributed_runs/__init__.py'))
+meta_fh = open(os.path.join(here, 'distributed_nose/__init__.py'))
 
 # Parse out the package meta information from the __init__ using *shudder*
 # regexes
@@ -85,7 +85,7 @@ setup(
     author_email=meta['contact'],
     url=meta['homepage'],
     long_description=long_description,
-    packages=['nose_distributed_runs'],
+    packages=['distributed_nose'],
     license='BSD',
     platforms=['any'],
     classifiers=CLASSIFIERS,
@@ -95,7 +95,7 @@ setup(
     ],
     entry_points = {
         'nose.plugins.0.10': [
-            'distributed = nose_distributed_runs.plugin:DistributedRuns',
+            'distributed = distributed_nose.plugin:Distributed',
         ],
     },
 )

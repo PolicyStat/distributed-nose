@@ -1,4 +1,4 @@
-# nose-distributed-runs Distribute your tests across machines with no hassle
+# distributed-nose Distribute your tests across multiple nodes with no hassle
 
 ## TLDR
 
@@ -25,8 +25,8 @@ Developer:
 
 Machine 1:
 
-	$ export NOSE_DISTRIBUTED_NODES=2;
-	$ export NOSE_DISTRIBUTED_NODE_NUMBER=1;
+	$ export NOSE_NODES=2;
+	$ export NOSE_NODE_NUMBER=1;
 	$ nosetests long_test_suite
 	...
 	Ran 660 tests in 220.502s
@@ -35,8 +35,8 @@ Machine 2:
 
 	$ echo "I feel loved"
 	I feel loved
-	$ export NOSE_DISTRIBUTED_NODES=2;
-	$ export NOSE_DISTRIBUTED_NODE_NUMBER=2;
+	$ export NOSE_NODES=2;
+	$ export NOSE_NODE_NUMBER=2;
 	$ nosetests long_test_suite
 	...
 	Ran 652 tests in 214.007s
@@ -182,7 +182,7 @@ with a new focus on speed!
 
 Factions form and the party threatens to splinter entirely!
 
-### Nose-Distributed-Runs: The Scalable Solution
+### Distributed-Nose: The Scalable Solution
 
 "Wait a minute."
 
@@ -200,12 +200,13 @@ She is steadfast, pouring over tomes on
 Once the solution is clear in her mind,
 she happens upon a fellow adventurer with sound advice.
 
-"Have you tried nose-distributed-runs?"
+"Have you tried distributed-nose?"
 
 "Unfortunately.
-I'm terribly allergic to pollen."
+I'm terribly allergic to pollen
+and I get that every spring."
 
-After initial confusion is resolved,
+After the initial confusion is resolved,
 it becomes clear to our hero
 that other adventurers have already crossed this path.
 Hooray!
@@ -229,7 +230,7 @@ our heroes go on to face many other adventures and trials.
 But never again would something come so close to erasing their very core
 as the oppression of untested code.
 
-## Why nose-distributed-runs?
+## Why distributed-nose?
 
 Scale your tests horizontally across unlimited machines with two test flags.
 
@@ -237,7 +238,7 @@ Scale your tests horizontally across unlimited machines with two test flags.
 
 1. Get the project source and install it
 
-    $ pip install nose-distributed-runs
+    $ pip install distributed-nose
 
 ## Usage
 
@@ -245,15 +246,15 @@ To run half your tests on one machine and the other half on the other:
 
 Machine 1:
 
-	$ nosetests --distributed-nodes 2 --distributed-node-number 1 long_test_suite
+	$ nosetests --nodes 2 --node-number 1 long_test_suite
 
 Machine 2:
 
-	$ nosetests --distributed-nodes 2 --distributed-node-number 2 long_test_suite
+	$ nosetests --nodes 2 --node-number 2 long_test_suite
 
 Alternatively, you can use the environment variables:
-* `NOSE_DISTRIBUTED_NODES`
-* `NOSE_DISTRIBuTED_NODE_NUMBER`
+* `NOSE_NODES`
+* `NOSE_NODE_NUMBER`
 
 ### Temporarily disabling test distribution
 
@@ -263,8 +264,8 @@ you sometimes still might want to run a one-off test.
 Instead of fiddling with environment variables,
 you can just use the `--distributed-disabled` flag.
 
-	$ export NOSE_DISTRIBUTED_NODES=2;
-	$ export NOSE_DISTRIBUTED_NODE_NUMBER=1;
+	$ export NOSE_NODES=2;
+	$ export NOSE_NODE_NUMBER=1;
 	$ nosetests --distributed-disabled long_test_suite
 
 ## Distribution algorithm
