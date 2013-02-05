@@ -4,13 +4,13 @@ from optparse import OptionParser
 
 from nose.config import Config
 
-from nose_distributed_runs.plugin import DistributedRuns
+from distributed_nose.plugin import DistributedNose
 
 
 class TestOptionValidation(unittest.TestCase):
 
     def setUp(self):
-        self.plugin = DistributedRuns()
+        self.plugin = DistributedNose()
         self.parser = OptionParser()
 
     def test_defaults(self):
@@ -23,7 +23,7 @@ class TestOptionValidation(unittest.TestCase):
 
     def test_vanilla(self):
         self.plugin.options(self.parser, env={})
-        args = ['--distributed-nodes=4', '--distributed-node-number=3']
+        args = ['--nodes=4', '--node-number=3']
         options, _ = self.parser.parse_args(args)
         self.plugin.configure(options, Config())
 
@@ -32,7 +32,7 @@ class TestOptionValidation(unittest.TestCase):
         self.assertTrue(self.plugin.enabled)
 
     def test_env_configs(self):
-        env = {'NOSE_DISTRIBUTED_NODES': 6, 'NOSE_DISTRIBUTED_NODE_NUMBER': 4}
+        env = {'NOSE_NODES': 6, 'NOSE_NODE_NUMBER': 4}
         self.plugin.options(self.parser, env=env)
         options, _ = self.parser.parse_args([])
         self.plugin.configure(options, Config())
@@ -42,7 +42,7 @@ class TestOptionValidation(unittest.TestCase):
         self.assertTrue(self.plugin.enabled)
 
     def test_disable_via_flag(self):
-        env = {'NOSE_DISTRIBUTED_NODES': 6, 'NOSE_DISTRIBUTED_NODE_NUMBER': 4}
+        env = {'NOSE_NODES': 6, 'NOSE_NODE_NUMBER': 4}
         self.plugin.options(self.parser, env=env)
         args = ['--distributed-disabled']
         options, _ = self.parser.parse_args(args)
@@ -52,7 +52,7 @@ class TestOptionValidation(unittest.TestCase):
 
     def test_integer_required_count(self):
         self.plugin.options(self.parser, env={})
-        args = ['--distributed-nodes=foo', '--distributed-node-number=1']
+        args = ['--nodes=foo', '--node-number=1']
         options, _ = self.parser.parse_args(args)
         self.plugin.configure(options, Config())
 
@@ -60,7 +60,7 @@ class TestOptionValidation(unittest.TestCase):
 
     def test_integer_required_id(self):
         self.plugin.options(self.parser, env={})
-        args = ['--distributed-nodes=2', '--distributed-node-number=baz']
+        args = ['--nodes=2', '--node-number=baz']
         options, _ = self.parser.parse_args(args)
         self.plugin.configure(options, Config())
 
@@ -68,7 +68,7 @@ class TestOptionValidation(unittest.TestCase):
 
     def test_id_in_range(self):
         self.plugin.options(self.parser, env={})
-        args = ['--distributed-nodes=2', '--distributed-node-number=3']
+        args = ['--nodes=2', '--node-number=3']
         options, _ = self.parser.parse_args(args)
         self.plugin.configure(options, Config())
 

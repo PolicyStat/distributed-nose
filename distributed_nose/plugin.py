@@ -6,14 +6,14 @@ from hash_ring import HashRing
 from nose.plugins.base import Plugin
 from nose.util import test_address
 
-logger = logging.getLogger('nose.plugins.distributed_runs')
+logger = logging.getLogger('nose.plugins.distributed_nose')
 
-class DistributedRuns(Plugin):
+class DistributedNose(Plugin):
     """
-    Distribute a test run shared-nothing style by specifying the total number
+    Distribute a test run, shared-nothing style, by specifying the total number
     of runners and a unique ID for this runner.
     """
-    name = 'distributed-runs'
+    name = 'distributed'
 
     def __init__(self):
         Plugin.__init__(self)
@@ -24,18 +24,18 @@ class DistributedRuns(Plugin):
 
     def options(self, parser, env):
         parser.add_option(
-            "--distributed-nodes",
+            "--nodes",
             action="store",
             dest="distributed_nodes",
-            default=env.get('NOSE_DISTRIBUTED_NODES', 1),
+            default=env.get('NOSE_NODES', 1),
             metavar="DISTRIBUTED_NODES",
             help="Across how many nodes are tests being distributed?",
         )
         parser.add_option(
-            "--distributed-node-number",
+            "--node-number",
             action="store",
             dest="distributed_node_number",
-            default=env.get('NOSE_DISTRIBUTED_NODE_NUMBER', 1),
+            default=env.get('NOSE_NODE_NUMBER', 1),
             metavar="DISTRIBUTED_NODE_NUMBER",
             help=(
                 "Of the total nodes running distributed tests, "
@@ -79,25 +79,25 @@ class DistributedRuns(Plugin):
         try:
             self.node_count = int(self.node_count)
         except ValueError:
-            logger.critical("--distributed-nodes must be an integer")
+            logger.critical("--nodes must be an integer")
             return False
 
         try:
             self.node_id = int(self.node_id)
         except ValueError:
-            logger.critical("--distributed-node-number must be an integer")
+            logger.critical("--node-number must be an integer")
             return False
 
         if self.node_id > self.node_count:
             logger.critical((
-                "--distributed-node-number can't be larger "
+                "--node-number can't be larger "
                 "than the number of nodes"
             ))
             return False
 
         if self.node_id < 1:
             logger.critical(
-                "--distributed-node-number must be greater than zero"
+                "--node-number must be greater than zero"
             )
             return False
 

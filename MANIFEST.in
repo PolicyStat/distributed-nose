@@ -3,5 +3,5 @@ include AUTHORS
 include LICENSE
 include MANIFEST.in
 include README.md
-recursive-include nose_distributed *.py
+recursive-include distributed_nose *.py
 prune *.pyc

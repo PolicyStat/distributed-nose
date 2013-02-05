@@ -4,21 +4,21 @@ from optparse import OptionParser
 
 from nose.config import Config
 
-from nose_distributed_runs.plugin import DistributedRuns
+from distributed_nose.plugin import DistributedNose
 
 from tests.dummy_tests import TC1, TC2, test_func1, test_func2
 
 class TestTestSelection(unittest.TestCase):
 
     def setUp(self):
-        self.plugin = DistributedRuns()
+        self.plugin = DistributedNose()
         self.parser = OptionParser()
 
     def test_some_tests_found(self):
         # At least some tests should be located
         plug = self.plugin
         plug.options(self.parser, env={})
-        args = ['--distributed-nodes=2', '--distributed-node-number=1']
+        args = ['--nodes=2', '--node-number=1']
         options, _ = self.parser.parse_args(args)
         plug.configure(options, Config())
 
@@ -34,7 +34,7 @@ class TestTestSelection(unittest.TestCase):
         # But we shouldn't have run all of the tests
         plug = self.plugin
         plug.options(self.parser, env={})
-        args = ['--distributed-nodes=2', '--distributed-node-number=1']
+        args = ['--nodes=2', '--node-number=1']
         options, _ = self.parser.parse_args(args)
         plug.configure(options, Config())
 
