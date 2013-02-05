@@ -38,6 +38,19 @@ class DistributedRuns(Plugin):
                 "which number is this node? (1-indexed)"
             ),
         )
+        parser.add_option(
+            "--distributed-disabled",
+            action="store_true",
+            dest="distributed_disabled",
+            default=False,
+            metavar="DISTRIBUTED_DISABLED",
+            help=((
+                "Set this flag to disable distribution, "
+                "despite having more than 1 node configured. "
+                "This is useful if you use environment configs "
+                "and want to temporarily disable test distribution."
+            )),
+        )
 
     def configure(self, options, config):
         self.node_count = options.distributed_nodes
@@ -46,6 +59,15 @@ class DistributedRuns(Plugin):
         if not self._options_are_valid():
             self.enabled = False
             return
+
+        if options.distributed_disabled:
+            self.enabled = False
+            return
+
+        if self.node_count > 1:
+            # If the user gives us a non-1 count of distributed nodes, then
+            # let's distribute their tests
+            self.enabled = True
 
     def _options_are_valid(self):
         try:

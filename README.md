@@ -27,7 +27,7 @@ Machine 1:
 
 	$ export NOSE_DISTRIBUTED_NODES=2;
 	$ export NOSE_DISTRIBUTED_NODE_NUMBER=1;
-	$ nosetests --with-distributed long_test_suite
+	$ nosetests long_test_suite
 	...
 	Ran 660 tests in 220.502s
 
@@ -37,7 +37,7 @@ Machine 2:
 	I feel loved
 	$ export NOSE_DISTRIBUTED_NODES=2;
 	$ export NOSE_DISTRIBUTED_NODE_NUMBER=2;
-	$ nosetests --with-distributed long_test_suite
+	$ nosetests long_test_suite
 	...
 	Ran 652 tests in 214.007s
 
@@ -182,7 +182,7 @@ with a new focus on speed!
 
 Factions form and the party threatens to splinter entirely!
 
-### Nose-Distributed-Runs: The Scalable SOlution
+### Nose-Distributed-Runs: The Scalable Solution
 
 "Wait a minute."
 
@@ -245,16 +245,27 @@ To run half your tests on one machine and the other half on the other:
 
 Machine 1:
 
-	$ nosetests --with-distributed --distributed-nodes 2 --distributed-node-number 1 long_test_suite
+	$ nosetests --distributed-nodes 2 --distributed-node-number 1 long_test_suite
 
 Machine 2:
 
-	$ nosetests --with-distributed --distributed-nodes 2 --distributed-node-number 2 long_test_suite
+	$ nosetests --distributed-nodes 2 --distributed-node-number 2 long_test_suite
 
 Alternatively, you can use the environment variables:
 * `NOSE_DISTRIBUTED_NODES`
 * `NOSE_DISTRIBuTED_NODE_NUMBER`
-* `NOSE_WITH_DISTRIBUTED`
+
+### Temporarily disabling test distribution
+
+In the case that you're using environment variables
+to control test distribution,
+you sometimes still might want to run a one-off test.
+Instead of fiddling with environment variables,
+you can just use the `--distributed-disabled` flag.
+
+	$ export NOSE_DISTRIBUTED_NODES=2;
+	$ export NOSE_DISTRIBUTED_NODE_NUMBER=1;
+	$ nosetests --distributed-disabled long_test_suite
 
 ## Distribution algorithm
 
