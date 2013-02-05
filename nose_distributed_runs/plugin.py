@@ -1,9 +1,12 @@
 
 import logging
 
-from nose.plugins.base import Plugin
+from hash_ring import HashRing
 
-logger = logging.getLogger('distributed_runs')
+from nose.plugins.base import Plugin
+from nose.util import test_address
+
+logger = logging.getLogger('nose.plugins.distributed_runs')
 
 class DistributedRuns(Plugin):
     """
@@ -17,6 +20,7 @@ class DistributedRuns(Plugin):
 
         self.node_count = None
         self.node_id = None
+        self.hash_ring = None
 
     def options(self, parser, env):
         parser.add_option(
@@ -69,6 +73,8 @@ class DistributedRuns(Plugin):
             # let's distribute their tests
             self.enabled = True
 
+        self.hash_ring = HashRing(range(1, self.node_count + 1))
+
     def _options_are_valid(self):
         try:
             self.node_count = int(self.node_count)
@@ -97,9 +103,15 @@ class DistributedRuns(Plugin):
 
         return True
 
+    def validateName(self, testObject):
+        address = test_address(testObject)
+        #from nose.tools import set_trace; set_trace()
+
+        return None
+
 
     def wantClass(self, cls):
-        return None
+        return self.validateName(cls)
 
-    def wantFunction(self, cls):
-        return None
+    def wantFunction(self, function):
+        return self.validateName(function)

@@ -91,10 +91,11 @@ setup(
     classifiers=CLASSIFIERS,
     install_requires=[
         'nose',
+        'hash_ring',
     ],
     entry_points = {
         'nose.plugins.0.10': [
-            'distributed = nose_distributed_runs.plugin:DistributedRunsPlugin',
+            'distributed = nose_distributed_runs.plugin:DistributedRuns',
         ],
     },
 )
