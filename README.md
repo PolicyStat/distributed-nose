@@ -25,9 +25,9 @@ Developer:
 
 Machine 1:
 
-	$ export NOSE_DR_MACHINE_COUNT=2;
-	$ export NOSE_DR_MACHINE_ID=1;
-	$ nosetests --with-distributed-runs long_test_suite
+	$ export NOSE_DISTRIBUTED_NODES=2;
+	$ export NOSE_DISTRIBUTED_NODE_NUMBER=1;
+	$ nosetests --with-distributed long_test_suite
 	...
 	Ran 660 tests in 220.502s
 
@@ -35,9 +35,9 @@ Machine 2:
 
 	$ echo "I feel loved"
 	I feel loved
-	$ export NOSE_DR_MACHINE_COUNT=2;
-	$ export NOSE_DR_MACHINE_ID=2;
-	$ nosetests --with-distributed-runs long_test_suite
+	$ export NOSE_DISTRIBUTED_NODES=2;
+	$ export NOSE_DISTRIBUTED_NODE_NUMBER=2;
+	$ nosetests --with-distributed long_test_suite
 	...
 	Ran 652 tests in 214.007s
 
@@ -238,6 +238,30 @@ Scale your tests horizontally across unlimited machines with two test flags.
 1. Get the project source and install it
 
     $ pip install nose-distributed-runs
+
+## Usage
+
+To run half your tests on one machine and the other half on the other:
+
+Machine 1:
+
+	$ nosetests --with-distributed --distributed-nodes 2 --distributed-node-number 1 long_test_suite
+
+Machine 2:
+
+	$ nosetests --with-distributed --distributed-nodes 2 --distributed-node-number 2 long_test_suite
+
+Alternatively, you can use the environment variables:
+* `NOSE_DISTRIBUTED_NODES`
+* `NOSE_DISTRIBuTED_NODE_NUMBER`
+* `NOSE_WITH_DISTRIBUTED`
+
+## Distribution algorithm
+
+Distribution is based on using hashing algorithm
+to consistently match each test Class and Function
+to exactly one of your N nodes.
+This allows coordination without communication.
 
 ## Is it Awesome?
 

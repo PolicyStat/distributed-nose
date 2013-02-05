@@ -5,7 +5,6 @@ from nose.plugins.base import Plugin
 
 logger = logging.getLogger('distributed_runs')
 
-
 class DistributedRuns(Plugin):
     """
     Distribute a test run shared-nothing style by specifying the total number
@@ -16,30 +15,66 @@ class DistributedRuns(Plugin):
     def __init__(self):
         Plugin.__init__(self)
 
-        self.machine_count = None
-        self.machine_id = None
+        self.node_count = None
+        self.node_id = None
 
     def options(self, parser, env):
         parser.add_option(
-            "--dr-machine-count",
+            "--distributed-nodes",
             action="store",
-            dest="machine_count",
-            default=env.get('NOSE_DR_MACHINE_COUNT', 1),
-            metavar="DR_MACHINE_COUNT",
-            help="Number of machines that will be running tests.",
+            dest="distributed_nodes",
+            default=env.get('NOSE_DISTRIBUTED_NODES', 1),
+            metavar="DISTRIBUTED_NODES",
+            help="Across how many nodes are tests being distributed?",
         )
         parser.add_option(
-            "--dr-machine-id",
+            "--distributed-node-number",
             action="store",
-            dest="machine_id",
-            default=env.get('NOSE_DR_MACHINE_ID', 1),
-            metavar="DR_MACHINE_ID",
-            help="Which number is this machine? (1-indexed)",
+            dest="distributed_node_number",
+            default=env.get('NOSE_DISTRIBUTED_NODE_NUMBER', 1),
+            metavar="DISTRIBUTED_NODE_NUMBER",
+            help=(
+                "Of the total nodes running distributed tests, "
+                "which number is this node? (1-indexed)"
+            ),
         )
 
     def configure(self, options, config):
-        self.machine_count = options.machine_count
-        self.machine_id = options.machine_id
+        self.node_count = options.distributed_nodes
+        self.node_id = options.distributed_node_number
+
+        if not self._options_are_valid():
+            self.enabled = False
+            return
+
+    def _options_are_valid(self):
+        try:
+            self.node_count = int(self.node_count)
+        except ValueError:
+            logger.critical("--distributed-nodes must be an integer")
+            return False
+
+        try:
+            self.node_id = int(self.node_id)
+        except ValueError:
+            logger.critical("--distributed-node-number must be an integer")
+            return False
+
+        if self.node_id > self.node_count:
+            logger.critical((
+                "--distributed-node-number can't be larger "
+                "than the number of nodes"
+            ))
+            return False
+
+        if self.node_id < 1:
+            logger.critical(
+                "--distributed-node-number must be greater than zero"
+            )
+            return False
+
+        return True
+
 
     def wantClass(self, cls):
         return None
