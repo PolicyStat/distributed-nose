@@ -270,10 +270,9 @@ you can just use the `--distributed-disabled` flag.
 
 ## Distribution algorithm
 
-Distribution is based on using hashing algorithm
-to consistently match each test Class and Function
-to exactly one of your N nodes.
-This allows coordination without communication.
+To determine which node runs which test,
+distributed-nose relies on the [hash_ring](https://github.com/Doist/hash_ring)
+library's consistent hashing implementation.
 
 ## Is it Awesome?
 
