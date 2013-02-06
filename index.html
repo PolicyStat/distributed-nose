@@ -1,0 +1,341 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Distributed-nose by PolicyStat</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>Distributed-nose</h1>
+        <p>Distribute your nose tests across multiple machines, hassle-free</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/PolicyStat/distributed-nose" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/PolicyStat/distributed-nose/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/PolicyStat/distributed-nose/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h1>distributed-nose Distribute your tests across multiple nodes with no hassle</h1>
+
+<h2>TLDR</h2>
+
+<h3>Before</h3>
+
+<p>Machine 1:</p>
+
+<pre><code>$ nosetests long_test_suite
+...
+Ran 1312 tests in 401.109s
+</code></pre>
+
+<p>Machine 2:</p>
+
+<pre><code>$ echo "I'm bored :("
+I'm bored :(
+$ uptime | awk -F'load average:' '{ print "Load: " $2 }'
+Load: 0.00, 0.00, 0.00
+</code></pre>
+
+<p>Developer:</p>
+
+<pre><code>$ google-chrome http://news.ycombinator.com
+</code></pre>
+
+<h3>After</h3>
+
+<p>Machine 1:</p>
+
+<pre><code>$ export NOSE_NODES=2;
+$ export NOSE_NODE_NUMBER=1;
+$ nosetests long_test_suite
+...
+Ran 660 tests in 220.502s
+</code></pre>
+
+<p>Machine 2:</p>
+
+<pre><code>$ echo "I feel loved"
+I feel loved
+$ export NOSE_NODES=2;
+$ export NOSE_NODE_NUMBER=2;
+$ nosetests long_test_suite
+...
+Ran 652 tests in 214.007s
+</code></pre>
+
+<h2>The Saga of Your Test Suite</h2>
+
+<h3>Oppression of Untested Code</h3>
+
+<p>The story of Your Test Suite has its heroes and its villains,
+its triumphs and its missteps.
+Like many other stories,
+it begins with a solitary hero.
+Graduating from university,
+she joins on with a merry band of software engineering adventurers.
+Led by management and supported by a wide cast of characters,
+they built things that the common folk loved and needed.</p>
+
+<p>Slowly slowly, things begin to change.
+Poorly-structured and strongly-coupled code sneaks in to the code base,
+making changes increasingly difficult
+and allowing devious bugs to emerge.
+Party members begin to regularly break disparate parts of the project,
+the realm being too large to survey quickly for one person.
+Areas of code become off-limits,
+as dragons and unknown things claim all who attempt entry.</p>
+
+<p>Through all this, our hero watches with a heavy heart.
+What is to be done about this untested code-base?
+Surely she can't change everything by herself?
+She is just one person!</p>
+
+<p>Finally, the daily struggles wear her down.</p>
+
+<p>"Enough is enough!"</p>
+
+<p>She resolves, pontificating on how to best strike
+against the oppression of untested code.</p>
+
+<p>"I'll write tests, and commit them to source control!"</p>
+
+<p>She says,
+understanding that working code is the best possible argument.</p>
+
+<h3>A Nose-fueled Peace</h3>
+
+<p>Methodically wielding and teaching <a href="https://github.com/nose-devs/nose">Nose</a>,
+she recruits from within to form a merry band of like-minded developers.
+They are the fellowship of TDD
+and they are determined to succeed.
+Tests are committed in flurries of high-value code!</p>
+
+<p>Tales of the fellowship's feats stir excitement in other developers.
+Another hero decides that if running some tests is good,
+then running all the tests all the time is better!
+Brandishing his hat of System Administration,
+he utilizes extra server resources and
+a Continuous Integration process is born.</p>
+
+<p>Our heroes grow over-confident in their success, however.
+Making little attempt to justify the practice,
+word of time spent writing tests gets to management.
+Managerial Oversight moves to squash our fledgling fellowship.</p>
+
+<h3>Managerial Push-back</h3>
+
+<p>"If you have time to write tests,
+I must have not given you enough to do!"</p>
+
+<p>They snarl,
+threatening with the most dangerous of weapons:
+The sling of passive-aggressive disagreement.</p>
+
+<p>Once again, our heroes summon their courage,
+and through great effort,
+boldly vanquish Managerial Opposition with the sword of high quality.
+A new era of peace and productivity begins
+and The Project flourishes.</p>
+
+<p>But that peace was not to last.
+The specter of Slow Test Runs looms over our heroes.
+Soon, test failures go unnoticed.
+Developers aren't waiting for tests to finish!
+The Test Suite falls in to decay.</p>
+
+<h3>Multiprocess Arrives</h3>
+
+<p>Developers grumble and management freely lobs I-Told-You-Sos.
+The darkness of the age before tests threatens to return.</p>
+
+<p>"I'll speed up our tests!"</p>
+
+<p>A voice cries out.
+It's our hero again,
+vowing to strike at the root cause of decay.</p>
+
+<p>Pouring over ancient texts,
+she quickly discovers
+<a href="http://nose.readthedocs.org/en/latest/plugins/multiprocess.html">Multiprocess</a>.</p>
+
+<p>"This will release us from our single-core shackles."</p>
+
+<p>She proclaims, confident.
+Hours later,
+her 8-core machine races through tests with alacrity.
+Soon, multiprocess is in use on the CI server,
+and test speed races forward.</p>
+
+<p>All is right in test land!
+Her fellow developers throw a break-room party
+in her honor.
+Python Meetup talks flow like water
+and TDD is once again well-liked by all.</p>
+
+<p>Like the previous peace,
+this too is temporary,
+as adding more cores is costly.
+Fast forward several score tests,
+and the once-speedy test suite
+regularly brings the beefy, multi-core CI server to its knees.</p>
+
+<h3>Distributed Despair</h3>
+
+<p>Remembering the ease of implementing Multiprocess,
+our hero knows the drill.
+She'll simply distribute the tests across multiple servers!
+The same ancient tomes are confidently consulted,
+as the solution seemingly obvious.</p>
+
+<p>But wait!</p>
+
+<p>Where are the simple guides?</p>
+
+<p>Our hero isn't a wizard.
+She can't decipher the ancient scrolls of distributed systems.
+She doesn't have time for formal wizard training,
+and the number of moving parts involved is boggling.</p>
+
+<p>Despair sets in as the once-speedy test sweet becomes slower and slower.
+The outlook for our adventurers is bleak,
+as an evaluation of speeding up the tests themselves reveals immense challenge.
+Some even suggest abandoning the test suite entirely
+with a new focus on speed!</p>
+
+<p>Factions form and the party threatens to splinter entirely!</p>
+
+<h3>Distributed-Nose: The Scalable Solution</h3>
+
+<p>"Wait a minute."</p>
+
+<p>A clear voice breaks through.
+It's our hero, once again.</p>
+
+<p>"Why do our test runners need to communicate to coordinate?
+Our memcached servers need the same level of coordination
+and achieve it with ease!"</p>
+
+<p>Tickled by the flickering of an idea,
+she sets to work.
+She is steadfast, pouring over tomes on
+<a href="http://en.wikipedia.org/wiki/Consistent_hashing">Consistent Hashing</a>.
+Once the solution is clear in her mind,
+she happens upon a fellow adventurer with sound advice.</p>
+
+<p>"Have you tried distributed-nose?"</p>
+
+<p>"Unfortunately.
+I'm terribly allergic to pollen
+and I get that every spring."</p>
+
+<p>After the initial confusion is resolved,
+it becomes clear to our hero
+that other adventurers have already crossed this path.
+Hooray!</p>
+
+<p>She quickly skims a strained narrative introduction,
+finding it, frankly, quite derivative.
+Skipping to the operationalizable section of the tome,
+she finds fast success.
+This is the tool for them.</p>
+
+<p>With minimal effort,
+The Test Suite is distributed across 4 machines.
+Test time is slashed and
+The Test Suite is saved.
+Pondering the future, our hero realizes
+she will never again face uncertainty about scalability.
+She can always just add more machines!</p>
+
+<p>Test Suite scalability ensured,
+our heroes go on to face many other adventures and trials.
+But never again would something come so close to erasing their very core
+as the oppression of untested code.</p>
+
+<h2>Why distributed-nose?</h2>
+
+<p>Scale your tests horizontally across unlimited machines with two test flags.</p>
+
+<h2>Installation</h2>
+
+<ol>
+<li>
+<p>Get the project source and install it</p>
+
+<p>$ pip install distributed-nose</p>
+</li>
+</ol><h2>Usage</h2>
+
+<p>To run half your tests on one machine and the other half on the other:</p>
+
+<p>Machine 1:</p>
+
+<pre><code>$ nosetests --nodes 2 --node-number 1 long_test_suite
+</code></pre>
+
+<p>Machine 2:</p>
+
+<pre><code>$ nosetests --nodes 2 --node-number 2 long_test_suite
+</code></pre>
+
+<p>Alternatively, you can use the environment variables:</p>
+
+<ul>
+<li><code>NOSE_NODES</code></li>
+<li><code>NOSE_NODE_NUMBER</code></li>
+</ul><h3>Temporarily disabling test distribution</h3>
+
+<p>In the case that you're using environment variables
+to control test distribution,
+you sometimes still might want to run a one-off test.
+Instead of fiddling with environment variables,
+you can just use the <code>--distributed-disabled</code> flag.</p>
+
+<pre><code>$ export NOSE_NODES=2;
+$ export NOSE_NODE_NUMBER=1;
+$ nosetests --distributed-disabled long_test_suite
+</code></pre>
+
+<h2>Distribution algorithm</h2>
+
+<p>To determine which node runs which test,
+distributed-nose relies on the <a href="https://github.com/Doist/hash_ring">hash_ring</a>
+library's consistent hashing implementation.</p>
+
+<h2>Is it Awesome?</h2>
+
+<p>Yes. Increasingly so.</p>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/PolicyStat">PolicyStat</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
