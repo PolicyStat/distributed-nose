@@ -96,7 +96,7 @@ setup(
     ],
     entry_points = {
         'nose.plugins.0.10': [
-            'distributed = distributed_nose.plugin:Distributed',
+            'distributed = distributed_nose.plugin:DistributedNose',
         ],
     },
 )

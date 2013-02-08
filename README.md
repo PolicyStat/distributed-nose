@@ -274,6 +274,12 @@ To determine which node runs which test,
 distributed-nose relies on the [hash_ring](https://github.com/Doist/hash_ring)
 library's consistent hashing implementation.
 
+## Running the test suite
+
+The test suite requires nose, and can be run via `setup.py`:
+
+	# python setup.py nosetests
+
 ## Is it Awesome?
 
 Yes. Increasingly so.
