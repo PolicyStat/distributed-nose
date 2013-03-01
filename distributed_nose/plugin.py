@@ -112,9 +112,8 @@ class DistributedNose(Plugin):
 
         return None
 
-
-    def wantClass(self, cls):
-        return self.validateName(cls)
+    def wantMethod(self, method):
+        return self.validateName(method)
 
     def wantFunction(self, function):
         return self.validateName(function)
