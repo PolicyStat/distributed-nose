@@ -14,6 +14,18 @@ class TestTestSelection(unittest.TestCase):
         self.plugin = DistributedNose()
         self.parser = OptionParser()
 
+    def test_nontest_collection(self):
+        plug = self.plugin
+        plug.options(self.parser, env={})
+        args = []
+        options, _ = self.parser.parse_args(args)
+        plug.configure(options, Config())
+
+        # This is a contrived example; in practice, this can be triggered by
+        # function proxies like wrapt.
+        nontest = list()
+        self.assertIsNone(plug.validateName(nontest))
+
     def test_some_tests_found(self):
         # At least some tests should be located
         plug = self.plugin
@@ -45,4 +57,3 @@ class TestTestSelection(unittest.TestCase):
                 all_allowed = False
 
         self.assertFalse(all_allowed)
-
