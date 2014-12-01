@@ -8,6 +8,7 @@ from distributed_nose.plugin import DistributedNose
 
 from tests.dummy_tests import TC1, TC2, test_func1, test_func2
 
+
 class TestTestSelection(unittest.TestCase):
 
     def setUp(self):
@@ -24,7 +25,7 @@ class TestTestSelection(unittest.TestCase):
         # This is a contrived example; in practice, this can be triggered by
         # function proxies like wrapt.
         nontest = list()
-        self.assertIsNone(plug.validateName(nontest))
+        self.assertEqual(plug.validateName(nontest), None)
 
     def test_some_tests_found(self):
         # At least some tests should be located
