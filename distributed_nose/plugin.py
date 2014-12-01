@@ -104,7 +104,11 @@ class DistributedNose(Plugin):
         return True
 
     def validateName(self, testObject):
-        filepath, module, call = test_address(testObject)
+        try:
+            _, module, call = test_address(testObject)
+        except TypeError:
+            module = 'unknown'
+            call = str(testObject)
 
         node = self.hash_ring.get_node('%s.%s' % (module, call))
         if node != self.node_id:
