@@ -16,10 +16,11 @@ class TestOptionValidation(unittest.TestCase):
     def test_defaults(self):
         self.plugin.options(self.parser, env={})
         args = []
-        options, _  = self.parser.parse_args(args)
+        options, _ = self.parser.parse_args(args)
 
         self.assertEqual(options.distributed_node_number, 1)
         self.assertEqual(options.distributed_nodes, 1)
+        self.assertEqual(options.distributed_hash_by_class, False)
 
     def test_vanilla(self):
         self.plugin.options(self.parser, env={})
@@ -29,16 +30,31 @@ class TestOptionValidation(unittest.TestCase):
 
         self.assertEqual(self.plugin.node_count, 4)
         self.assertEqual(self.plugin.node_id, 3)
+        self.assertEqual(self.plugin.hash_by_class, False)
         self.assertTrue(self.plugin.enabled)
 
     def test_env_configs(self):
-        env = {'NOSE_NODES': 6, 'NOSE_NODE_NUMBER': 4}
+        env = {'NOSE_NODES': 6,
+               'NOSE_NODE_NUMBER': 4,
+               'NOSE_HASH_BY_CLASS': 'yes'}
         self.plugin.options(self.parser, env=env)
         options, _ = self.parser.parse_args([])
         self.plugin.configure(options, Config())
 
         self.assertEqual(self.plugin.node_count, 6)
         self.assertEqual(self.plugin.node_id, 4)
+        self.assertEqual(self.plugin.hash_by_class, True)
+        self.assertTrue(self.plugin.enabled)
+
+    def test_hash_by_class_via_flag(self):
+        env = {'NOSE_NODES': 6,
+               'NOSE_NODE_NUMBER': 4}
+        self.plugin.options(self.parser, env=env)
+        args = ['--hash-by-class']
+        options, _ = self.parser.parse_args(args)
+        self.plugin.configure(options, Config())
+
+        self.assertEqual(self.plugin.hash_by_class, True)
         self.assertTrue(self.plugin.enabled)
 
     def test_disable_via_flag(self):
@@ -73,5 +89,3 @@ class TestOptionValidation(unittest.TestCase):
         self.plugin.configure(options, Config())
 
         self.assertFalse(self.plugin.enabled)
-
-

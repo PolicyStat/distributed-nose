@@ -2,21 +2,43 @@
 import unittest
 
 class TC1(unittest.TestCase):
-    def test_method1(self):
+    def test_TC1_1(self):
         assert True
 
-    def test_method2(self):
+    def test_TC1_2(self):
         assert True
 
-    def test_method3(self):
+    def test_TC1_3(self):
         assert True
 
-    def test_method4(self):
+    def test_TC1_4(self):
         assert True
 
+class TC2(unittest.TestCase):
+    def test_TC2_1(self):
+        assert True
 
-class TC2(TC1):
-    pass
+    def test_TC2_2(self):
+        assert True
+
+    def test_TC2_3(self):
+        assert True
+
+    def test_TC2_4(self):
+        assert True
+
+class TC3(unittest.TestCase):
+    def test_TC3_1(self):
+        assert True
+
+    def test_TC3_2(self):
+        assert True
+
+    def test_TC3_3(self):
+        assert True
+
+    def test_TC3_4(self):
+        assert True
 
 
 def test_func1():
