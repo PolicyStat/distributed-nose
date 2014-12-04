@@ -55,10 +55,25 @@ class DistributedNose(Plugin):
                 "and want to temporarily disable test distribution."
             )),
         )
+        parser.add_option(
+            "--hash-by-class",
+            action="store_true",
+            dest="distributed_hash_by_class",
+            default=bool(env.get('NOSE_HASH_BY_CLASS', False)),  # any non-empty value enables
+            metavar="DISTRIBUTED_HASH_BY_CLASS",
+            help=((
+                "By default, tests are distributed individually. "
+                "This results in the most even distribution and the"
+                " best speed if all tests have the same runtime. "
+                "However, it duplicates class setup/teardown work; "
+                "set this flag to keep tests in the same class on the same node. "
+            )),
+        )
 
     def configure(self, options, config):
         self.node_count = options.distributed_nodes
         self.node_id = options.distributed_node_number
+        self.hash_by_class = options.distributed_hash_by_class
 
         if not self._options_are_valid():
             self.enabled = False
@@ -116,8 +131,24 @@ class DistributedNose(Plugin):
 
         return None
 
+    def wantClass(self, cls):
+        if not self.hash_by_class:
+            # Defer to wantMethod.
+            return None
+
+        node = self.hash_ring.get_node(str(cls))
+        if node != self.node_id:
+            return False
+
+        return None
+
     def wantMethod(self, method):
+        if self.hash_by_class:
+            # Don't override class selection decisions.
+            return None
+
         return self.validateName(method)
 
     def wantFunction(self, function):
+        # Always operate directly on bare functions.
         return self.validateName(function)
