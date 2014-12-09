@@ -274,6 +274,12 @@ To determine which node runs which test,
 distributed-nose relies on the [hash_ring](https://github.com/Doist/hash_ring)
 library's consistent hashing implementation.
 
+By default, tests are individually hashed to the ring.
+This results in the most even distribution and the best speed if all tests have the same runtime.
+However, it duplicates class setup/teardown work.
+If that's expensive, you may want to use `--hash-by-class` or set `NOSE_HASH_BY_CLASS`;
+this will hash tests in the same class to the same node.
+
 ## Running the test suite
 
 The test suite requires nose, and can be run via `setup.py`:
