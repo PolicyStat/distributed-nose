@@ -8,6 +8,7 @@ from nose.util import test_address
 
 logger = logging.getLogger('nose.plugins.distributed_nose')
 
+
 class DistributedNose(Plugin):
     """
     Distribute a test run, shared-nothing style, by specifying the total number
@@ -28,7 +29,6 @@ class DistributedNose(Plugin):
             action="store",
             dest="distributed_nodes",
             default=env.get('NOSE_NODES', 1),
-            metavar="DISTRIBUTED_NODES",
             help="Across how many nodes are tests being distributed?",
         )
         parser.add_option(
@@ -36,7 +36,6 @@ class DistributedNose(Plugin):
             action="store",
             dest="distributed_node_number",
             default=env.get('NOSE_NODE_NUMBER', 1),
-            metavar="DISTRIBUTED_NODE_NUMBER",
             help=(
                 "Of the total nodes running distributed tests, "
                 "which number is this node? (1-indexed)"
@@ -47,7 +46,6 @@ class DistributedNose(Plugin):
             action="store_true",
             dest="distributed_disabled",
             default=False,
-            metavar="DISTRIBUTED_DISABLED",
             help=((
                 "Set this flag to disable distribution, "
                 "despite having more than 1 node configured. "
@@ -59,14 +57,14 @@ class DistributedNose(Plugin):
             "--hash-by-class",
             action="store_true",
             dest="distributed_hash_by_class",
-            default=bool(env.get('NOSE_HASH_BY_CLASS', False)),  # any non-empty value enables
-            metavar="DISTRIBUTED_HASH_BY_CLASS",
+            # any non-empty value enables
+            default=bool(env.get('NOSE_HASH_BY_CLASS', False)),
             help=((
                 "By default, tests are distributed individually. "
                 "This results in the most even distribution and the"
                 " best speed if all tests have the same runtime. "
                 "However, it duplicates class setup/teardown work; "
-                "set this flag to keep tests in the same class on the same node. "
+                "set this flag to keep tests in the same class on the same node. "  # noqa
             )),
         )
 
