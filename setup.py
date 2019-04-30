@@ -92,7 +92,7 @@ setup(
     classifiers=CLASSIFIERS,
     install_requires=[
         'nose',
-        'hash_ring',
+        'hashring',
     ],
     entry_points = {
         'nose.plugins.0.10': [

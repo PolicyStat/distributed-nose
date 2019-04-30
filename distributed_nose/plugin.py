@@ -1,7 +1,7 @@
 
 import logging
 
-from hash_ring import HashRing
+from hashring import HashRing
 
 from nose.plugins.base import Plugin
 from nose.util import test_address
